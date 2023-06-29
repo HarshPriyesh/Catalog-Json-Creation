@@ -1,0 +1,16 @@
+featureId String
+sourceDetail String
+sourceDatabase String
+sourceTable String
+sourceTableField String
+filterCondition String
+groupByColumns String
+transformation String
+aggregateFieldName String
+snapshotDuration String
+targetDB String
+targetTable String
+add_column String
+drop_column String
+broadCast Boolean
+sequenceNumber Int

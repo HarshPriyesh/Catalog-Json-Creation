@@ -1,0 +1,2 @@
+schema_path,file_name,catalog_path
+schema_files/cobl/anil,acq.rbb_lbg_ob_companydetails_individual_kaps_digitalacceptance,catalog_json/cobl/anil

@@ -1,0 +1,23 @@
+{
+  "name": "curated_edh_agreement_feature.feature_details",
+  "description": "",
+  "displayName": "curated_edh_agreement_feature.feature_details",
+  "linked_resource": "",
+  "schema": {"columns": [{"column": "featureId", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sourceDetail", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sourceDatabase", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sourceTable", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sourceTableField", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "filterCondition", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "groupByColumns", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "transformation", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "aggregateFieldName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "snapshotDuration", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "targetDB", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "targetTable", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "add_column", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "drop_column", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "broadCast", "description": "null", "mode": "NULLABLE", "type": "BOOLEAN"},
+    {"column": "sequenceNumber", "description": "null", "mode": "NULLABLE", "type": "INTEGER"}
+  ]}
+}
