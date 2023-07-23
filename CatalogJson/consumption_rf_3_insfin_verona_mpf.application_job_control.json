@@ -1,0 +1,17 @@
+{
+  "name": "consumption_rf_3_insfin_verona_mpf.application_job_control",
+  "description": "",
+  "displayName": "consumption_rf_3_insfin_verona_mpf.application_job_control",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "tivoliJobId", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "lastprocessingtimestamp", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "entityName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "lastprocessingstarttime", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "lastprocessingendtime", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "nextprocessingdate", "description": "null", "mode": "NULLABLE", "type": "DATE"},
+    {"column": "lastrunstatus", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sparkapplicationid", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "duration", "description": "null", "mode": "NULLABLE", "type": "STRING"}
+  ]}
+}

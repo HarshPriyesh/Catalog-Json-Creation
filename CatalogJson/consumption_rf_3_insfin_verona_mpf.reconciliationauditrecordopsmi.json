@@ -1,0 +1,18 @@
+{
+  "name": "consumption_rf_3_insfin_verona_mpf.reconciliationauditrecordopsmi",
+  "description": "",
+  "displayName": "consumption_rf_3_insfin_verona_mpf.reconciliationauditrecordopsmi",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "runDateTime", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "batchName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "status", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "ingestionDate", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "apiName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "variableName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "groupByColumnName", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "groupingValue", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "fnzValue", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "currentViewValue", "description": "null", "mode": "NULLABLE", "type": "FLOAT"}
+  ]}
+}

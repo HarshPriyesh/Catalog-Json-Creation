@@ -45,6 +45,15 @@ def datatype_convert(argument):
     return switcher.get(argument, argument.upper())
 
 
+def remove_trailing_comma_from_json(file_path):
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+    wordsInLine = lines[-3].split("}")
+    lines[-3] = wordsInLine[0] + "}" + "\n"
+    with open(file_path, "w") as file:
+        file.writelines(lines)
+
+
 def check_datatype(line, datatypes):
     for datatype in datatypes:
         if datatype in line:
@@ -111,3 +120,5 @@ for dirpath, dirnames, filenames in os.walk(source):
             convert_schema_to_json(dirpath, file)
         else:
             pass
+    for file in os.listdir(destination):
+        remove_trailing_comma_from_json(destination + "/" + file)
