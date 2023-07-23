@@ -1,5 +1,4 @@
 import os
-import re
 
 rootdir=r'./hql'
 outputdir=r'./jsonDatacatalog'
@@ -39,6 +38,7 @@ def hql_file(subdir, file):
             #j = j.strip().replace(' ', '')
             #j = re.sub('"', '', j[0])
             j = j[2:]
+            print(j)
             #j = j[0].strip('"')
             #j = [y.strip('" ').replace(" ", "") for y in j]
             #print(j)
@@ -112,7 +112,7 @@ def hql_file(subdir, file):
                     #     des_val = cmtval.replace(",","").strip()
                     # else:
                     des_val = str(j[0]).lower()
-
+                    print(des_val)
                     write_json.write("""   {
                     \"column\": \"""" + j[0] + """\",
                     \"type\": \"""" + s1 + """\",
@@ -133,6 +133,10 @@ def hql_file(subdir, file):
 
 
 for subdir, dirs, files in os.walk(rootdir):
+    print(f"Current directory: {subdir}")
+    print(f"Subdirectories: {dirs}")
+    print(f"Files: {files}")
+    print("---")
     for file in files:
         if ".hql" in file or ".csv" in file:
             hql_file(subdir, file)

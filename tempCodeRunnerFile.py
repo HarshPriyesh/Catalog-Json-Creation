@@ -1,0 +1,1 @@
+table_nm = line.lstrip().rstrip().replace("`", "").split(" ")
