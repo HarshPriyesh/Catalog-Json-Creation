@@ -1,30 +1,11 @@
 import os
+import yaml
 
-source = r"./hql"
-destination = r"./CatalogJson"
-database = "consumption_rf_3_insfin_verona_mpf"
-hqlFile = "example.hql"
-datatypes = [
-    "char",
-    "varchar",
-    "binary",
-    "tinyint",
-    "smallint",
-    "int",
-    "bigint",
-    "decimal",
-    "numeric",
-    "double",
-    "struct",
-    "map",
-    "string",
-    "bytes",
-    "integer",
-    "float",
-    "record",
-    "date",
-    "timestamp",
-]
+
+def read_yaml_file(file_path):
+    with open(file_path, "r") as file:
+        data = yaml.safe_load(file)
+    return data
 
 
 def datatype_convert(argument):
@@ -110,15 +91,51 @@ def convert_schema_to_json(dirpath, file):
     hql.close()
 
 
-for dirpath, dirnames, filenames in os.walk(source):
-    # print(f"Current directory: {dirpath}")
-    # print(f"Subdirectories: {dirnames}")
-    # print(f"Files: {filenames}")
-    # print("---")
-    for file in filenames:
-        if file == hqlFile:
-            convert_schema_to_json(dirpath, file)
-        else:
-            pass
+if __name__ == "__main__":
+    source = r"./hql"
+    datatypes = [
+        "char",
+        "varchar",
+        "binary",
+        "tinyint",
+        "smallint",
+        "int",
+        "bigint",
+        "decimal",
+        "numeric",
+        "double",
+        "struct",
+        "map",
+        "string",
+        "bytes",
+        "integer",
+        "float",
+        "record",
+        "date",
+        "timestamp",
+    ]
+
+    yaml_file = "config.yaml"
+    yaml_data = read_yaml_file(yaml_file)
+    print("\nEXECUTION STARTED")
+    destination = r"./CatalogJson/" + yaml_data.get("feedname")
+    if not os.path.exists(destination):
+        print(
+            f'INFO  :  Destination directory path dose not exist, "{destination}"...creating directory'
+        )
+        os.makedirs(destination)
+        print("INFO  :  Destination directory created")
+    database = yaml_data.get("database")
+    hqlFile = yaml_data.get("hql")
+    checkHQL = True
+    for dirpath, dirnames, filenames in os.walk(source):
+        for file in filenames:
+            if file == hqlFile:
+                checkHQL = False
+                convert_schema_to_json(dirpath, file)
+    if checkHQL:
+        print("\nEXECUTION FAILED")
+        print(f'ERROR :  "{hqlFile}" dose not exist\n')
+        exit()
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
