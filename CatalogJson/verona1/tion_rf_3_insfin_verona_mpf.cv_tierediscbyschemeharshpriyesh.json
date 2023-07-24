@@ -1,7 +1,7 @@
 {
-  "name": "consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme",
+  "name": "tion_rf_3_insfin_verona_mpf.cv_tierediscbyschemeharshpriyesh",
   "description": "",
-  "displayName": "consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme",
+  "displayName": "tion_rf_3_insfin_verona_mpf.cv_tierediscbyschemeharshpriyesh",
   "linked_resource": "",
   "schema": {"columns": [
     {"column": "loadflag", "description": "null", "mode": "NULLABLE", "type": "STRING"},

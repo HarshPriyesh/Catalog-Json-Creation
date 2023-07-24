@@ -42,18 +42,42 @@ def check_datatype(line, datatypes):
     return False
 
 
+
+
+
+def shorten_name(DBtableName, max_length=63):
+    global trim_name
+    length = len(DBtableName)
+    print(f'INFO  :  Number of characters in "{DBtableName}" - {length}')
+    if length > max_length:
+        print("ERROR :  Name contains more than 64 characters. Trimming the name...")
+        diff = (len(DBtableName) - max_length) + 3
+        DBtableName = DBtableName[diff:]
+        trim_name += 1
+        print(
+            f"INFO  :  After trimming - {DBtableName} ({len(DBtableName)} characters)"
+        )
+    return DBtableName
+
+
 def convert_schema_to_json(dirpath, file):
+    print(f'INFO  :  "{file}" found at "{dirpath}"')
     hql = open(os.path.join(dirpath, file), "r")
+    print(f'INFO  :  Reading..."{file}"')
     skip_mode = False
     jsonCount = 0
     for line in hql:
         wordsInLine = line.lstrip().rstrip().replace("`", "").split(" ")
-        if "create " in line.lower():
+        if "create " in line.lower() and " database " not in line.lower():
             temp1 = line.lstrip().rstrip().replace("`", "").split(" ")
             tableName = temp1[-1].split(".")[-1].replace("(", "").lower()
             DBtableName = database + "." + tableName
+            print(f"-----\nConversion {jsonCount+1}")
+            print(f"INFO  :  Table Name - {tableName}")
+            DBtableName = shorten_name(DBtableName)
             catalogJson = open(os.path.join(destination, DBtableName + ".json"), "w")
-            jsonCount+=1
+            jsonCount += 1
+            print(f'INFO  :  Creating Catalog Json, {DBtableName + ".json"}')
             l = [
                 "{\n",
                 '  "name": "',
@@ -91,14 +115,18 @@ def convert_schema_to_json(dirpath, file):
                         )
                         catalogJson.writelines(l2)
                 except IndexError:
-                    print(f'ERROR :  List index out of range in table {tableName}:{wordsInLine}\n')
+                    print(
+                        f"ERROR :  List index out of range in table {tableName}:{wordsInLine}\n"
+                    )
     catalogJson.close()
     hql.close()
-    print(f"INFO  :  Total Catalog Json created: {jsonCount}")
+    print(f"-----\nINFO  :  Total Catalog Json created: {jsonCount}")
+    print(f"INFO  :  Number of table name trimmed: {trim_name}")
 
 
 if __name__ == "__main__":
     source = r"./hql"
+    trim_name = 0
     datatypes = [
         "char",
         "varchar",
@@ -119,7 +147,7 @@ if __name__ == "__main__":
         "record",
         "date",
         "timestamp",
-        "boolean"
+        "boolean",
     ]
 
     yaml_file = "config.yaml"
@@ -128,11 +156,12 @@ if __name__ == "__main__":
     hqlFile = yaml_data.get("hql")
     destination = r"./CatalogJson/" + yaml_data.get("feedname")
     print("\nEXECUTION STARTED")
-    print('*****')
+    print("*****")
     print(f'Feed_Name: {yaml_data.get("feedname")}')
-    print(f'Input_path: {source}/{hqlFile}')
-    print(f'Output_path: {destination}')
-    print('*****')
+    print(f"Database: {database}")
+    print(f"HQL: {hqlFile}")
+    print(f"Output_path: {destination}")
+    print("*****")
     if not os.path.exists(destination):
         print(
             f'INFO  :  Destination directory path dose not exist, "{destination}"...creating directory'
@@ -151,4 +180,4 @@ if __name__ == "__main__":
         exit()
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
-    print("EXECUTION COMPLETE\n")
+    print("*****\nEXECUTION COMPLETE\n")

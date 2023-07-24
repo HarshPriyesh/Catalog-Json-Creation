@@ -1,3 +1,4 @@
+CREATE DATABASE consumption_rf_3_insfin_verona_mpf;
 CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_cashentries`(
    `loadflag` char(1),
    `sourcesystemid` tinyint,
@@ -76,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_cashentries`(
    `ingestion_day` int)
 STORED AS ORC;
 
-CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme`(
+CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_tierediscbyschemeHarshPriyesh`(
    `loadflag` char(1),
    `sourcesystemid` tinyint,
    `tierediscbyschemeid` int,
