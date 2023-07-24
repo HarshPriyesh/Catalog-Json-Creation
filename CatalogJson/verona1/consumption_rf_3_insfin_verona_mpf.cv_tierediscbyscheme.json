@@ -1,0 +1,27 @@
+{
+  "name": "consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme",
+  "description": "",
+  "displayName": "consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "loadflag", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "sourcesystemid", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "tierediscbyschemeid", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "tierboundaryid", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "schemeid", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "subaccounttype", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "arrangementtype", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "instrumentid", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "isactive", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "fromdate", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "todate", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "lowerlimit", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "upperlimit", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "rate", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "edh_ingest_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_ingest_delete_flag", "description": "null", "mode": "NULLABLE", "type": "BOOLEAN"},
+    {"column": "edh_source_extract_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_brand_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "edh_ingest_map", "description": "null", "mode": "NULLABLE", "type": "STRING)"}
+  ]}
+}

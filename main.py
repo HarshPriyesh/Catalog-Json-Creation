@@ -75,18 +75,21 @@ def convert_schema_to_json(dirpath, file):
             elif ")" in line and skip_mode:
                 skip_mode = False
             elif not skip_mode:
-                if check_datatype(line, datatypes):
-                    l2 = (
-                        '    {"column": "',
-                        wordsInLine[0],
-                        '", "description": "null", "mode": "NULLABLE",',
-                        ' "type": "',
-                        datatype_convert(
-                            wordsInLine[1].split("(", 1)[0].replace(",", "")
-                        ),
-                        '"},\n',
-                    )
-                    catalogJson.writelines(l2)
+                try:
+                    if check_datatype(line, datatypes):
+                        l2 = (
+                            '    {"column": "',
+                            wordsInLine[0],
+                            '", "description": "null", "mode": "NULLABLE",',
+                            ' "type": "',
+                            datatype_convert(
+                                wordsInLine[1].split("(", 1)[0].replace(",", "")
+                            ),
+                            '"},\n',
+                        )
+                        catalogJson.writelines(l2)
+                except IndexError:
+                    print(f'ERROR :  List index out of range in table {tableName}:{wordsInLine}\n')
     catalogJson.close()
     hql.close()
 
@@ -113,6 +116,7 @@ if __name__ == "__main__":
         "record",
         "date",
         "timestamp",
+        "boolean"
     ]
 
     yaml_file = "config.yaml"
