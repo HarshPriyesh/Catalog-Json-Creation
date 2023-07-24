@@ -75,3 +75,29 @@ CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_cashentries`(
    `ingestion_month` int,
    `ingestion_day` int)
 STORED AS ORC;
+
+CREATE TABLE IF NOT EXISTS `consumption_rf_3_insfin_verona_mpf.cv_tierediscbyscheme`(
+   `loadflag` char(1),
+   `sourcesystemid` tinyint,
+   `tierediscbyschemeid` int,
+   `tierboundaryid` smallint,
+   `schemeid` int,
+   `subaccounttype` varchar(20),
+   `arrangementtype` varchar(20),
+   `instrumentid` int,
+   `isactive` tinyint,
+   `fromdate` int,
+   `todate` int,
+   `lowerlimit` decimal(19,2),
+   `upperlimit` decimal(19,2),
+   `rate` decimal(7,4),
+   `edh_ingest_ts` timestamp,
+   `edh_ingest_delete_flag` boolean,
+   `edh_source_extract_ts` timestamp,
+   `edh_brand_id` string,
+   `edh_ingest_map` string)
+ PARTITIONED BY (
+   `ingestion_year` int,
+   `ingestion_month` int,
+   `ingestion_day` int)
+STORED AS ORC;

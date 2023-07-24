@@ -45,6 +45,7 @@ def check_datatype(line, datatypes):
 def convert_schema_to_json(dirpath, file):
     hql = open(os.path.join(dirpath, file), "r")
     skip_mode = False
+    jsonCount = 0
     for line in hql:
         wordsInLine = line.lstrip().rstrip().replace("`", "").split(" ")
         if "create " in line.lower():
@@ -52,6 +53,7 @@ def convert_schema_to_json(dirpath, file):
             tableName = temp1[-1].split(".")[-1].replace("(", "").lower()
             DBtableName = database + "." + tableName
             catalogJson = open(os.path.join(destination, DBtableName + ".json"), "w")
+            jsonCount+=1
             l = [
                 "{\n",
                 '  "name": "',
@@ -92,6 +94,7 @@ def convert_schema_to_json(dirpath, file):
                     print(f'ERROR :  List index out of range in table {tableName}:{wordsInLine}\n')
     catalogJson.close()
     hql.close()
+    print(f"INFO  :  Total Catalog Json created: {jsonCount}")
 
 
 if __name__ == "__main__":
@@ -121,16 +124,21 @@ if __name__ == "__main__":
 
     yaml_file = "config.yaml"
     yaml_data = read_yaml_file(yaml_file)
-    print("\nEXECUTION STARTED")
+    database = yaml_data.get("database")
+    hqlFile = yaml_data.get("hql")
     destination = r"./CatalogJson/" + yaml_data.get("feedname")
+    print("\nEXECUTION STARTED")
+    print('*****')
+    print(f'Feed_Name: {yaml_data.get("feedname")}')
+    print(f'Input_path: {source}/{hqlFile}')
+    print(f'Output_path: {destination}')
+    print('*****')
     if not os.path.exists(destination):
         print(
             f'INFO  :  Destination directory path dose not exist, "{destination}"...creating directory'
         )
         os.makedirs(destination)
         print("INFO  :  Destination directory created")
-    database = yaml_data.get("database")
-    hqlFile = yaml_data.get("hql")
     checkHQL = True
     for dirpath, dirnames, filenames in os.walk(source):
         for file in filenames:
@@ -143,3 +151,4 @@ if __name__ == "__main__":
         exit()
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
+    print("EXECUTION COMPLETE\n")
