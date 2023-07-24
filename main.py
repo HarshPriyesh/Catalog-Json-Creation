@@ -42,9 +42,6 @@ def check_datatype(line, datatypes):
     return False
 
 
-
-
-
 def shorten_name(DBtableName, max_length=63):
     global trim_name
     length = len(DBtableName)
