@@ -124,10 +124,16 @@ def convert_schema_to_json(dirpath, file):
             if "partitioned by" in line.lower():
                 l1 = ["  ]}\n", "}"]
                 catalogJson.writelines(l1)
-                if ")" in line.lower():
+                if ")" in line:
+                    continue
+                skip_mode = True
+            elif "location" in line.lower():
+                if ";" in line:
                     continue
                 skip_mode = True
             elif ")" in line and skip_mode:
+                skip_mode = False
+            elif ";" in line and skip_mode:
                 skip_mode = False
             elif not skip_mode:
                 try:
