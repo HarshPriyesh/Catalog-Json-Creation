@@ -1,5 +1,27 @@
 import os
 import yaml
+import logging
+import sys
+
+
+def setup_logging(log_file):
+    logging.basicConfig(level=logging.DEBUG)
+    log_format = "%(asctime)s - %(levelname)s - %(message)s"
+    logging.basicConfig(format=log_format, level=logging.DEBUG)
+
+    file_handler = logging.FileHandler(log_file)
+    file_formatter = logging.Formatter(log_format)
+    file_handler.setFormatter(file_formatter)
+    logging.getLogger().addHandler(file_handler)
+
+
+def redirect_stdout_to_file(log_file):
+    sys.stdout = open(log_file, "w")
+
+
+def restore_stdout(stdout_original):
+    sys.stdout.close()
+    sys.stdout = stdout_original
 
 
 def read_yaml_file(file_path):
@@ -165,6 +187,11 @@ def convert_schema_to_json(dirpath, file):
 
 
 if __name__ == "__main__":
+    log_file = "execution.log"
+    setup_logging(log_file)
+    stdout_original = sys.stdout
+    redirect_stdout_to_file(log_file)
+
     source = r"./hql"
     trim_name = 0
     datatypes = [
@@ -223,3 +250,5 @@ if __name__ == "__main__":
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
     print("*****\nEXECUTION COMPLETE\n")
+    
+    restore_stdout(stdout_original)
