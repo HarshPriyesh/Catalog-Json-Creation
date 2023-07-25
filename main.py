@@ -37,7 +37,7 @@ def remove_trailing_comma_from_json(file_path):
 
 def check_datatype(line, datatypes):
     for datatype in datatypes:
-        if datatype in line:
+        if datatype in line.lower():
             return True
     return False
 
@@ -57,15 +57,44 @@ def shorten_name(DBtableName, max_length=63):
     return DBtableName
 
 
+def skip_lines_until_create(lines):
+    hql_skip_mode = False
+    for line in lines:
+        if "create " in line.lower() and "database" in line.lower():
+            hql_skip_mode = True
+            continue
+        if "create " in line.lower() and "raw_" in line.lower():
+            hql_skip_mode = True
+            continue
+        if "drop table " in line.lower():
+            hql_skip_mode = True
+            continue
+        if "recon_table" in line.lower():
+            hql_skip_mode = True
+            continue
+        if "create " in line.lower():
+            hql_skip_mode = False
+        if not hql_skip_mode:
+            yield line
+
+
 def convert_schema_to_json(dirpath, file):
     print(f'INFO  :  "{file}" found at "{dirpath}"')
-    hql = open(os.path.join(dirpath, file), "r")
+    original_hql = open(os.path.join(dirpath, file), "r")
     print(f'INFO  :  Reading..."{file}"')
+    filtered_hql = skip_lines_until_create(original_hql.readlines())
+    print(f'INFO  :  Filtering HQL by keeping only schema table structure(s)"')
+    original_hql.close()
+    print(f'INFO  :  Creating temporary HQL, "temp.hql", with filtered HQL details')
+    with open("temp.hql", "w") as output_file:
+        output_file.writelines(filtered_hql)
+    print(f'INFO  :  "temp.hql" created')
+    temp_hql = open("temp.hql", "r")
     skip_mode = False
     jsonCount = 0
-    for line in hql:
+    for line in temp_hql:
         wordsInLine = line.lstrip().rstrip().replace("`", "").split(" ")
-        if "create " in line.lower() and " database " not in line.lower():
+        if "create " in line.lower():
             temp1 = line.lstrip().rstrip().replace("`", "").split(" ")
             tableName = temp1[-1].split(".")[-1].replace("(", "").lower()
             DBtableName = database + "." + tableName
@@ -116,8 +145,13 @@ def convert_schema_to_json(dirpath, file):
                         f"ERROR :  List index out of range in table {tableName}:{wordsInLine}\n"
                     )
     catalogJson.close()
-    hql.close()
-    print(f"-----\nINFO  :  Total Catalog Json created: {jsonCount}")
+    temp_hql.close()
+    try:
+        os.remove("temp.hql")
+        print(f'-----\nINFO  :  "temp.hql" has been deleted successfully.')
+    except Exception as e:
+        print(f"ERROR :  An error occurred while deleting the file: {e}")
+    print(f"INFO  :  Total Catalog Json created: {jsonCount}")
     print(f"INFO  :  Number of table name trimmed: {trim_name}")
 
 
@@ -172,8 +206,8 @@ if __name__ == "__main__":
                 checkHQL = False
                 convert_schema_to_json(dirpath, file)
     if checkHQL:
-        print("\nEXECUTION FAILED")
-        print(f'ERROR :  "{hqlFile}" dose not exist\n')
+        print(f'ERROR :  "{hqlFile}" dose not exist')
+        print("EXECUTION FAILED\n")
         exit()
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
