@@ -224,13 +224,13 @@ if __name__ == "__main__":
     hqlFile = yaml_data.get("hql")
     destination = r"./CatalogJson/" + yaml_data.get("feedname")
     print("\nEXECUTION STARTED")
-    print("*****")
+    print("*******")
     print(f'Feed_Name: {yaml_data.get("feedname")}')
     print(f"Schema Database: {database}")
     print(f"Raw Database: {rawDB}")
     print(f"HQL: {hqlFile}")
     print(f"Output_path: {destination}")
-    print("*****")
+    print("*******")
     if not os.path.exists(destination):
         print(
             f'INFO  :  Destination directory path dose not exist, "{destination}"...creating directory'
@@ -249,6 +249,6 @@ if __name__ == "__main__":
         exit()
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
-    print("*****\nEXECUTION COMPLETE\n")
+    print("*******\nEXECUTION COMPLETE\n")
 
     restore_stdout(stdout_original)
