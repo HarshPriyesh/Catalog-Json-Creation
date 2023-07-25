@@ -1,3 +1,4 @@
-feedname: verona
-database: consumption_rf_3_insfin_verona_mpf
-hql: Verona Curation 55 tables.hql
+feedname: 'visa'
+schema_database: 'schema_base2_al00242'
+raw_database: ''
+hql: 'visa.hql'

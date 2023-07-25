@@ -59,11 +59,14 @@ def shorten_name(DBtableName, max_length=63):
 
 def skip_lines_until_create(lines):
     hql_skip_mode = False
+    global rawDB
+    if rawDB is "":
+        rawDB = "raw_"
     for line in lines:
         if "create " in line.lower() and "database" in line.lower():
             hql_skip_mode = True
             continue
-        if "create " in line.lower() and "raw_" in line.lower():
+        if "create " in line.lower() and rawDB.lower() in line.lower():
             hql_skip_mode = True
             continue
         if "drop table " in line.lower():
@@ -183,13 +186,15 @@ if __name__ == "__main__":
 
     yaml_file = "config.yaml"
     yaml_data = read_yaml_file(yaml_file)
-    database = yaml_data.get("database")
+    database = yaml_data.get("schema_database")
+    rawDB = yaml_data.get("raw_database")
     hqlFile = yaml_data.get("hql")
     destination = r"./CatalogJson/" + yaml_data.get("feedname")
     print("\nEXECUTION STARTED")
     print("*****")
     print(f'Feed_Name: {yaml_data.get("feedname")}')
-    print(f"Database: {database}")
+    print(f"Schema Database: {database}")
+    print(f"Raw Database: {rawDB}")
     print(f"HQL: {hqlFile}")
     print(f"Output_path: {destination}")
     print("*****")
