@@ -122,7 +122,7 @@ def convert_schema_to_json(dirpath, file):
         if "create " in line.lower():
             temp1 = line.lstrip().rstrip().replace("`", "").split(" ")
             tableName = temp1[-1].split(".")[-1].replace("(", "").lower()
-            DBtableName = database + "." + tableName
+            DBtableName = database.lower() + "." + tableName
             print(f"-----\nConversion {jsonCount+1}")
             print(f"INFO  :  Table Name - {tableName}")
             DBtableName = shorten_name(DBtableName)
@@ -250,5 +250,5 @@ if __name__ == "__main__":
     for file in os.listdir(destination):
         remove_trailing_comma_from_json(destination + "/" + file)
     print("*****\nEXECUTION COMPLETE\n")
-    
+
     restore_stdout(stdout_original)
