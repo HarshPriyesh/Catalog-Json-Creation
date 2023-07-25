@@ -60,7 +60,7 @@ def shorten_name(DBtableName, max_length=63):
 def skip_lines_until_create(lines):
     hql_skip_mode = False
     global rawDB
-    if rawDB is "":
+    if rawDB == "":
         rawDB = "raw_"
     for line in lines:
         if "create " in line.lower() and "database" in line.lower():
