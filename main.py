@@ -166,7 +166,7 @@ def convert_schema_to_json(dirpath, file):
                             '", "description": "null", "mode": "NULLABLE",',
                             ' "type": "',
                             datatype_convert(
-                                wordsInLine[1].split("(", 1)[0].replace(",", "")
+                                wordsInLine[1].split("(", 1)[0].replace(",", "").replace(")", "")
                             ),
                             '"},\n',
                         )
