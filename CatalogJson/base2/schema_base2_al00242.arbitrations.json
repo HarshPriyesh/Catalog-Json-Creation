@@ -1,0 +1,24 @@
+{
+  "name": "schema_base2_al00242.arbitrations",
+  "description": "",
+  "displayName": "schema_base2_al00242.arbitrations",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "record_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "reasoncode", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "amount", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "pan", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "transaction_entry_value_date", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "merchant", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "infopac_report_criteria", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "note", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "debit_credit_indicator", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "heritage", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "gti", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "edh_ingest_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_ingest_delete_flag", "description": "null", "mode": "NULLABLE", "type": "BOOLEAN"},
+    {"column": "edh_source_extract_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_brand_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "edh_ingest_map", "description": "null", "mode": "NULLABLE", "type": "STRING"}
+  ]}
+}

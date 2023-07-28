@@ -1,0 +1,28 @@
+{
+  "name": "schema_base2_al00242.chargebacks",
+  "description": "",
+  "displayName": "schema_base2_al00242.chargebacks",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "record_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "pan", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "amount", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "purchdate", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "reimbatt", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "arn", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "vrol_financial_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "merchant", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "city", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "trancode", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "entryvaluedate", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "heritagecode", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "debit_credit_indicator", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "heritage", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "gti", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "edh_ingest_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_ingest_delete_flag", "description": "null", "mode": "NULLABLE", "type": "BOOLEAN"},
+    {"column": "edh_source_extract_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_brand_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "edh_ingest_map", "description": "null", "mode": "NULLABLE", "type": "STRING"}
+  ]}
+}

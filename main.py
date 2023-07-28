@@ -186,18 +186,65 @@ def convert_schema_to_json(dirpath, file):
     except Exception as e:
         print(f"ERROR :  An error occurred while deleting the file: {e}")
     print(f"INFO  :  Total Catalog Json created: {jsonCount}")
-    print(f"INFO  :  Number of table name trimmed: {trim_name}")
+    print(f"INFO  :  Number of table names trimmed: {trim_name}")
 
 
 def config1(destination, config_file):
+    GCP_AtlasJson_path = yaml_data.get("GCP_AtlasJson_path")
+    print(f'INFO  :  GCP_AtlasJson_path - "{GCP_AtlasJson_path}"')
+    GCP_CatalogJson_path = yaml_data.get("GCP_CatalogJson_path")
+    print(f'INFO  :  GCP_CatalogJson_path - "{GCP_CatalogJson_path}"')
     print("INFO  :  Creating/Updating...data_catalog_create_schema_json_config.txt")
     count = 0
-    with open(config_file + "/data_catalog_create_schema_json_config.txt", "w") as file:
+    atlasJson_names = []
+    with open(
+        config_file + "/data_catalog_create_schema_json_config.txt", "w"
+    ) as config1:
+        config1.write("atlas_ectract,dest_storage_path\n")
         for filename in os.listdir(destination):
             if os.path.isfile(os.path.join(destination, filename)):
-                file.write(filename + "\n")
+                atlasJson_names.append(filename.replace(".json", ""))
+                c1 = (
+                    GCP_AtlasJson_path
+                    + "/"
+                    + filename
+                    + ","
+                    + GCP_CatalogJson_path
+                    + "/"
+                    + filename
+                    + "\n"
+                )
+                config1.write(c1)
                 count += 1
-    print(f"-----\nINFO  :  Total lines updated in config file: {count}")
+    print(f"INFO  :  Total lines updated in config1 file: {count}")
+    if bool(yaml_data.get("config2").lower() == "true"):
+        print("-----\nINFO  :  Config 2 execution")
+        entry_group = yaml_data.get("entry_group")
+        print(f'INFO  :  entry_group - "{entry_group}"')
+        bucket_name = yaml_data.get("bucket_name")
+        print(f'INFO  :  bucket_name - "{bucket_name}"')
+        print(
+            f'INFO  :  Config files path: "{config_file}/data_catalog_create_ext_entries_config.txt"'
+        )
+        print("INFO  :  Creating/Updating...data_catalog_create_ext_entries_config.txt")
+        count = 0
+        with open(
+            config_file + "/data_catalog_create_ext_entries_config.txt", "w"
+        ) as config2:
+            config2.write("entry_group,entry,schema_path,linked_resources\n")
+            for names in atlasJson_names:
+                c2 = (
+                    entry_group
+                    + ","
+                    + names
+                    + ","
+                    + GCP_CatalogJson_path
+                    + ","
+                    + f"gs://{bucket_name}/{feedname}_{trouxid}/{feedname}/{names.split('.')[1]}/\n"
+                )
+                config2.write(c2)
+                count += 1
+        print(f"INFO  :  Total lines updated in config2 file: {count}")
 
 
 if __name__ == "__main__":
@@ -233,13 +280,16 @@ if __name__ == "__main__":
 
     yaml_file = "parameter.yaml"
     yaml_data = read_yaml_file(yaml_file)
+    feedname = yaml_data.get("feedname")
+    trouxid = yaml_data.get("trouxid")
     database = yaml_data.get("schema_database")
     rawDB = yaml_data.get("raw_database")
     hqlFile = yaml_data.get("hql")
     atlasJson = bool(yaml_data.get("config1").lower() == "true")
     print("\nEXECUTION STARTED")
     print("*******")
-    print(f'Feed_Name: {yaml_data.get("feedname")}')
+    print(f"Feed Name: {feedname}")
+    print(f"TrouxID: {trouxid}")
     print(f"Schema Database: {database}")
     print(f"Raw Database: {rawDB}")
     print(f"HQL: {hqlFile}")
@@ -247,7 +297,7 @@ if __name__ == "__main__":
         destination = yaml_data.get("atlasJson_path")
         print(f'Atlas_Json_Path: "{destination}"')
     else:
-        destination = r"./CatalogJson/" + yaml_data.get("feedname")
+        destination = r"./CatalogJson/" + feedname
         print(f"Catalog_Json_Path: {destination}")
     print("*******")
     if not os.path.exists(destination):
@@ -261,21 +311,23 @@ if __name__ == "__main__":
         os.makedirs(destination)
         print(f'INFO  :  Path directory created, "{destination}"')
     if atlasJson:
-        print("INFO  :  Config1 execution")
+        print("INFO  :  Config 1 execution")
         if len(os.listdir(destination)) == 0:
             print(f"ERROR :  The directory is empty, {destination}")
             print("*******\nEXECUTION FAILED")
             restore_stdout(stdout_original)
             exit()
         else:
-            config_file = r"./Configs/" + yaml_data.get("feedname")
+            config_file = r"./Configs/" + feedname
             if not os.path.exists(config_file):
                 print(f'INFO  :  Config path dose not exist, "{config_file}"')
                 print(f"INFO  :  Creating directory...")
                 os.makedirs(config_file)
                 print(f'INFO  :  Config directory created, "{config_file}"')
             else:
-                print(f'INFO  :  Config file(s) path: "{config_file}"')
+                print(
+                    f'INFO  :  Config files path: "{config_file}/data_catalog_create_schema_json_config.txt"'
+                )
             config1(destination, config_file)
     else:
         checkHQL = True
@@ -290,6 +342,6 @@ if __name__ == "__main__":
             exit()
         for file in os.listdir(destination):
             remove_trailing_comma_from_json(destination + "/" + file)
-    print("*******\nEXECUTION COMPLETED\n")
+    print("*******\nEXECUTION COMPLETED")
 
     restore_stdout(stdout_original)
