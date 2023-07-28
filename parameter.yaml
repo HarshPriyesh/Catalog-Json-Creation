@@ -9,5 +9,9 @@ atlasJson_path: "./AtlasJson/"
 
 # config2 = data_catalog_create_ext_entries_config.txt
 config2: "True"
-entry_group: ""
+entry_group: "staging"
 bucket_name: ""
+
+# Atlas and catalog json GCP path
+GCP_AtlasJson_path: ""
+GCP_CatalogJson_path: ""
