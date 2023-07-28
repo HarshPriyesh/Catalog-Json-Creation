@@ -5,6 +5,7 @@ hql: "base2.hql"
 
 # config1 = data_catalog_create_schema_json_config.txt
 config1: "True" #When 'true' catalog json will not be created
+atlasJson_path: "./AtlasJson/"
 
 # config2 = data_catalog_create_ext_entries_config.txt
 config2: "True"

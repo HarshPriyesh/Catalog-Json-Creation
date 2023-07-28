@@ -166,7 +166,10 @@ def convert_schema_to_json(dirpath, file):
                             '", "description": "null", "mode": "NULLABLE",',
                             ' "type": "',
                             datatype_convert(
-                                wordsInLine[1].split("(", 1)[0].replace(",", "").replace(")", "")
+                                wordsInLine[1]
+                                .split("(", 1)[0]
+                                .replace(",", "")
+                                .replace(")", "")
                             ),
                             '"},\n',
                         )
@@ -184,6 +187,17 @@ def convert_schema_to_json(dirpath, file):
         print(f"ERROR :  An error occurred while deleting the file: {e}")
     print(f"INFO  :  Total Catalog Json created: {jsonCount}")
     print(f"INFO  :  Number of table name trimmed: {trim_name}")
+
+
+def config1(destination, config_file):
+    print("INFO  :  Creating/Updating...data_catalog_create_schema_json_config.txt")
+    count = 0
+    with open(config_file + "/data_catalog_create_schema_json_config.txt", "w") as file:
+        for filename in os.listdir(destination):
+            if os.path.isfile(os.path.join(destination, filename)):
+                file.write(filename + "\n")
+                count += 1
+    print(f"-----\nINFO  :  Total lines updated in config file: {count}")
 
 
 if __name__ == "__main__":
@@ -217,38 +231,65 @@ if __name__ == "__main__":
         "boolean",
     ]
 
-    yaml_file = "config.yaml"
+    yaml_file = "parameter.yaml"
     yaml_data = read_yaml_file(yaml_file)
     database = yaml_data.get("schema_database")
     rawDB = yaml_data.get("raw_database")
     hqlFile = yaml_data.get("hql")
-    destination = r"./CatalogJson/" + yaml_data.get("feedname")
+    atlasJson = bool(yaml_data.get("config1").lower() == "true")
     print("\nEXECUTION STARTED")
     print("*******")
     print(f'Feed_Name: {yaml_data.get("feedname")}')
     print(f"Schema Database: {database}")
     print(f"Raw Database: {rawDB}")
     print(f"HQL: {hqlFile}")
-    print(f"Output_path: {destination}")
+    if atlasJson:
+        destination = yaml_data.get("atlasJson_path")
+        print(f'Atlas_Json_Path: "{destination}"')
+    else:
+        destination = r"./CatalogJson/" + yaml_data.get("feedname")
+        print(f"Catalog_Json_Path: {destination}")
     print("*******")
     if not os.path.exists(destination):
-        print(
-            f'INFO  :  Destination directory path dose not exist, "{destination}"...creating directory'
-        )
+        print(f'INFO  :  Path dose not exist, "{destination}"')
+        if atlasJson:
+            print("ERROR :  Mention the correct Atlas Json path to proceed")
+            print("*******\nEXECUTION FAILED")
+            restore_stdout(stdout_original)
+            exit()
+        print(f"INFO  :  Creating directory...")
         os.makedirs(destination)
-        print("INFO  :  Destination directory created")
-    checkHQL = True
-    for dirpath, dirnames, filenames in os.walk(source):
-        for file in filenames:
-            if file == hqlFile:
-                checkHQL = False
-                convert_schema_to_json(dirpath, file)
-    if checkHQL:
-        print(f'ERROR :  "{hqlFile}" dose not exist')
-        print("EXECUTION FAILED\n")
-        exit()
-    for file in os.listdir(destination):
-        remove_trailing_comma_from_json(destination + "/" + file)
-    print("*******\nEXECUTION COMPLETE\n")
+        print(f'INFO  :  Path directory created, "{destination}"')
+    if atlasJson:
+        print("INFO  :  Config1 execution")
+        if len(os.listdir(destination)) == 0:
+            print(f"ERROR :  The directory is empty, {destination}")
+            print("*******\nEXECUTION FAILED")
+            restore_stdout(stdout_original)
+            exit()
+        else:
+            config_file = r"./Configs/" + yaml_data.get("feedname")
+            if not os.path.exists(config_file):
+                print(f'INFO  :  Config path dose not exist, "{config_file}"')
+                print(f"INFO  :  Creating directory...")
+                os.makedirs(config_file)
+                print(f'INFO  :  Config directory created, "{config_file}"')
+            else:
+                print(f'INFO  :  Config file(s) path: "{config_file}"')
+            config1(destination, config_file)
+    else:
+        checkHQL = True
+        for dirpath, dirnames, filenames in os.walk(source):
+            for file in filenames:
+                if file == hqlFile:
+                    checkHQL = False
+                    convert_schema_to_json(dirpath, file)
+        if checkHQL:
+            print(f'ERROR :  "{hqlFile}" dose not exist')
+            print("EXECUTION FAILED\n")
+            exit()
+        for file in os.listdir(destination):
+            remove_trailing_comma_from_json(destination + "/" + file)
+    print("*******\nEXECUTION COMPLETED\n")
 
     restore_stdout(stdout_original)

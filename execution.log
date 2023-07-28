@@ -1,0 +1,17 @@
+
+EXECUTION STARTED
+*******
+Feed_Name: base2
+Schema Database: SCHEMA_BASE2_AL00242
+Raw Database: RAW_BASE2_AL00242
+HQL: base2.hql
+Atlas_Json_Path: "./AtlasJson/"
+*******
+INFO  :  Config1 execution
+INFO  :  Config file(s) path: "./Configs/base2"
+INFO  :  Creating/Updating...data_catalog_create_schema_json_config.txt
+-----
+INFO  :  Total lines updated in config file: 3
+*******
+EXECUTION COMPLETED
+
