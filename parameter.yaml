@@ -13,5 +13,5 @@ entry_group: "staging"
 bucket_name: ""
 
 # Atlas and catalog json GCP path
-GCP_AtlasJson_path: ""
-GCP_CatalogJson_path: ""
+GCP_AtlasJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json/"
+GCP_CatalogJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json/"
