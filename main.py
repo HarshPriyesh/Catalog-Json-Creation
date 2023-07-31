@@ -251,6 +251,9 @@ def config2(entryNames, locations):
     )
     print("INFO  :  Creating/Updating...data_catalog_create_ext_entries_config.txt")
     count = 0
+    if len(locations) == 0:
+        for name in entryNames:
+            locations.append(f"gs://{bucket_name}/{feedname}_{trouxid}/{feedname}/{name.split('.')[-1]}/")
     with open(
         config_file + "/data_catalog_create_ext_entries_config.txt", "w"
     ) as config2:
