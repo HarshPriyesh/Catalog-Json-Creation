@@ -157,7 +157,7 @@ def convert_schema_to_json(dirpath, file):
                 )
             else:
                 locations.append(
-                    f"gs://{bucket_name}/{feedname}_{trouxid}/{feedname}/{tableName}/"
+                    f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{tableName}/"
                 )
         else:
             if "partitioned by" in line.lower():
@@ -223,7 +223,7 @@ def config1(destination, config_file):
             if os.path.isfile(os.path.join(destination, filename)):
                 entryNames.append(filename.replace(".json", ""))
                 locations.append(
-                    f"gs://{bucket_name}/{feedname}_{trouxid}/{feedname}/{filename.split('.')[1]}/"
+                    f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{filename.split('.')[1]}/"
                 )
                 c1 = (
                     GCP_AtlasJson_path
@@ -253,7 +253,7 @@ def config2(entryNames, locations):
     count = 0
     if len(locations) == 0:
         for name in entryNames:
-            locations.append(f"gs://{bucket_name}/{feedname}_{trouxid}/{feedname}/{name.split('.')[-1]}/")
+            locations.append(f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{name.split('.')[-1]}/")
     with open(
         config_file + "/data_catalog_create_ext_entries_config.txt", "w"
     ) as config2:
