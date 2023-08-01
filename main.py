@@ -288,11 +288,15 @@ def config3(classification_sheet, dirpath):
     classification = pd.read_excel(
         dirpath + "/" + classification_sheet, sheet_name="classification"
     )
-    with open(config_file + "/data_catalog_tag_external_entries_config.txt", "w") as config3:
+    with open(
+        config_file + "/data_catalog_tag_external_entries_config.txt", "w"
+    ) as config3:
         print(
             f'INFO  :  Config 3 files path: "{config_file}/data_catalog_tag_external_entries_config.txt"'
         )
-        print("INFO  :  Creating/Updating...data_catalog_tag_external_entries_config.txt")
+        print(
+            "INFO  :  Creating/Updating...data_catalog_tag_external_entries_config.txt"
+        )
         count = 0
         for index, row in classification.iterrows():
             ext_name = row["Database Name"] + "_" + row["Table Name"]
