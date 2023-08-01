@@ -7,14 +7,22 @@ raw_database: "RAW_BASE2_AL00242"
 hql: "base2.hql"
 
 # config1 = data_catalog_create_schema_json_config.txt
-config1: "True" # Make it "False" to create Catalog Json
-atlasJson_path: "./AtlasJson/"
-
 # config2 = data_catalog_create_ext_entries_config.txt
-config2: "True"
-entry_group: "staging"
-bucket_name: "ap-edhsta-bld-01-stb-euwe2-base2staging-01"
+# config3 =
+# config4 =
+create_catalogJson: "False"
+config1: "False" # If "create_catalogJson" is "True" then config1 will not be executed
+config2: "False" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
+config3: "True"
+config4: "True"
+
+atlasJson_path: "./AtlasJson/" # config1
+entry_group: "staging" # config2, config3
+bucket_name: "ap-edhsta-bld-01-stb-euwe2-base2staging-01" # config2
+classification_sheet: "base2.xlsx" # config2, config3
+BQ_datasetID: "ap_edhcon_bld_01_bqd_euwe2_base2stg_01" # config3
 
 # Atlas and catalog json GCP path
+BQ_projectID: "ap-edhcon-bld-01-a155"
 GCP_AtlasJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json"
 GCP_CatalogJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json"

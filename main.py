@@ -2,6 +2,7 @@ import os
 import yaml
 import logging
 import sys
+import pandas as pd
 
 
 def setup_logging(log_file):
@@ -64,8 +65,10 @@ def check_datatype(line, datatypes):
     return False
 
 
+global trim_name
+
+
 def shorten_name(DBtableName, max_length=63):
-    global trim_name
     length = len(DBtableName)
     print(f'INFO  :  Number of characters in "{DBtableName}" - {length}')
     if length > max_length:
@@ -117,6 +120,7 @@ def convert_schema_to_json(dirpath, file):
     temp_hql = open("temp.hql", "r")
     skip_mode = False
     jsonCount = 0
+    trim_name = 0
     entryNames = []
     locations = []
     for line in temp_hql:
@@ -203,7 +207,9 @@ def convert_schema_to_json(dirpath, file):
     except Exception as e:
         print(f"ERROR :  An error occurred while deleting the file: {e}")
     print(f"INFO  :  Total Catalog Json created: {jsonCount}")
-    print(f"INFO  :  Number of table names trimmed: {trim_name}")
+    if trim_name > 0:
+        print(f"INFO  :  Number of table names trimmed: {trim_name}")
+    trim_name = 0
     if config_2:
         config2(entryNames, locations)
 
@@ -243,17 +249,19 @@ def config1(destination, config_file):
 
 
 def config2(entryNames, locations):
-    print("-----\nCONFIG 2 execution")
+    print("-----\nCONFIG 2 Execution")
     print(f'INFO  :  entry_group - "{entry_group}"')
     print(f'INFO  :  bucket_name - "{bucket_name}"')
     print(
-        f'INFO  :  Config files path: "{config_file}/data_catalog_create_ext_entries_config.txt"'
+        f'INFO  :  Config 2 files path: "{config_file}/data_catalog_create_ext_entries_config.txt"'
     )
     print("INFO  :  Creating/Updating...data_catalog_create_ext_entries_config.txt")
     count = 0
     if len(locations) == 0:
         for name in entryNames:
-            locations.append(f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{name.split('.')[-1]}/")
+            locations.append(
+                f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{name.split('.')[-1]}/"
+            )
     with open(
         config_file + "/data_catalog_create_ext_entries_config.txt", "w"
     ) as config2:
@@ -273,6 +281,78 @@ def config2(entryNames, locations):
     print(f"INFO  :  Total lines updated in config2 file: {count}")
 
 
+def config3(classification_sheet, dirpath):
+    print("-----\nCONFIG 3 Execution")
+    print(f'INFO  :  entry_group - "{entry_group}"')
+    print(f'INFO  :  Reading..."{classification_sheet}"')
+    classification = pd.read_excel(
+        dirpath + "/" + classification_sheet, sheet_name="classification"
+    )
+    with open(config_file + "/data_catalog_tag_ext_entries_config.txt", "w") as config3:
+        print(
+            f'INFO  :  Config 3 files path: "{config_file}/data_catalog_create_ext_entries_config.txt"'
+        )
+        print("INFO  :  Creating/Updating...data_catalog_create_ext_entries_config.txt")
+        count = 0
+        for index, row in classification.iterrows():
+            ext_name = row["Database Name"] + "_" + row["Table Name"]
+            sentence = f"{entry_group},{ext_name},{row['Column Name']},{row['Taxonomy'].lower()},{row['Policy Tag'].lower()}\n"
+            config3.write(sentence)
+            count += 1
+    print(f"INFO  :  Total lines updated in config3 file: {count}")
+
+
+def config4(classification_sheet, dirpath):
+    print("-----\nCONFIG 4 Execution")
+    bq_projectId = yaml_data.get("BQ_projectID")
+    bq_datasetId = yaml_data.get("BQ_datasetID")
+    print(f'INFO  :  BQ Project ID: "{bq_projectId}"')
+    print(f'INFO  :  BQ Dataset ID: "{bq_datasetId}"')
+    print(f'INFO  :  Reading..."{classification_sheet}"')
+    all_sheets = pd.read_excel(
+        dirpath + "/" + classification_sheet, header=0, sheet_name=None
+    )
+    sheet1 = all_sheets["classification"]
+    sheet2 = all_sheets["BQ"]
+    bq = open(config_file + "/data_catalog_bqtag_config.txt", "w")
+    print(
+        f'INFO  :  Config 3 files path: "{config_file}/data_catalog_bqtag_entries_config.txt"'
+    )
+    print("INFO  :  Creating/Updating...data_catalog_create_bqtag_config.txt")
+    count = 0
+    for indexbq, rowbq in sheet2.iterrows():
+        name = rowbq["Table Name"]
+        run = 0
+        for index, row in sheet1.iterrows():
+            if name == row["Table Name"]:
+                if run == 0:
+                    b = f"{bq_projectId}.{bq_datasetId}.{name},bld_{row['Taxonomy'].lower()}:{row['Policy Tag'].lower()}:{row['Column Name']}:add"
+                    run += 1
+                    continue
+                b = (
+                    b
+                    + f";bld_{row['Taxonomy'].lower()}:{row['Policy Tag'].lower()}:{row['Column Name']}:add"
+                )
+        count += 1
+        b = b + "\n"
+        bq.write(b)
+    bq.close()
+    print(f"INFO  :  Total lines updated in config4 file: {count}")
+
+
+def check_path(destination, config1):
+    if not os.path.exists(destination):
+        print(f'ERROR :  Path dose not exist, "{destination}"')
+        if config1 == "config1":
+            print("ERROR :  Mention the correct Atlas Json path to proceed")
+            print("*******\nEXECUTION FAILED")
+            restore_stdout(stdout_original)
+            exit()
+        print(f"INFO  :  Creating directory...")
+        os.makedirs(destination)
+        print(f'INFO  :  Path directory created, "{destination}"')
+
+
 if __name__ == "__main__":
     log_file = "execution.log"
     setup_logging(log_file)
@@ -280,7 +360,6 @@ if __name__ == "__main__":
     redirect_stdout_to_file(log_file)
 
     source = r"./hql"
-    trim_name = 0
     datatypes = [
         "char",
         "varchar",
@@ -310,10 +389,15 @@ if __name__ == "__main__":
     database = yaml_data.get("schema_database")
     rawDB = yaml_data.get("raw_database")
     hqlFile = yaml_data.get("hql")
+    create_catalogJson = bool(yaml_data.get("create_catalogJson").lower() == "true")
+    config_file = r"./Configs/" + feedname
     config_1 = bool(yaml_data.get("config1").lower() == "true")
     config_2 = bool(yaml_data.get("config2").lower() == "true")
+    config_3 = bool(yaml_data.get("config3").lower() == "true")
+    config_4 = bool(yaml_data.get("config4").lower() == "true")
     entry_group = yaml_data.get("entry_group")
     bucket_name = yaml_data.get("bucket_name")
+    classification_sheet = yaml_data.get("classification_sheet")
     GCP_CatalogJson_path = yaml_data.get("GCP_CatalogJson_path")
     GCP_AtlasJson_path = yaml_data.get("GCP_AtlasJson_path")
 
@@ -324,40 +408,24 @@ if __name__ == "__main__":
     print(f"Schema Database: {database}")
     print(f"Raw Database: {rawDB}")
     print(f"HQL: {hqlFile}")
-    if config_1:
-        destination = yaml_data.get("atlasJson_path")
-        print(f'Atlas_Json_Path: "{destination}"')
-    else:
-        destination = r"./CatalogJson/" + feedname
-        print(f"Catalog_Json_Path: {destination}")
     print("*******")
-    if not os.path.exists(destination):
-        print(f'INFO  :  Path dose not exist, "{destination}"')
-        if config_1:
-            print("ERROR :  Mention the correct Atlas Json path to proceed")
-            print("*******\nEXECUTION FAILED")
-            restore_stdout(stdout_original)
-            exit()
-        print(f"INFO  :  Creating directory...")
-        os.makedirs(destination)
-        print(f'INFO  :  Path directory created, "{destination}"')
-    config_file = r"./Configs/" + feedname
-    if config_1 or config_2:
-        if not os.path.exists(config_file):
-            print(f'INFO  :  Config path dose not exist, "{config_file}"')
-            print(f"INFO  :  Creating directory...")
-            os.makedirs(config_file)
-            print(f'INFO  :  Config directory created, "{config_file}"')
-    if config_1:
-        print("CONFIG 1 execution")
-        if len(os.listdir(destination)) == 0:
-            print(f"ERROR :  The directory is empty, {destination}")
-            print("*******\nEXECUTION FAILED")
-            restore_stdout(stdout_original)
-            exit()
-        print(f'INFO  :  Config files path: "{config_file}/data_catalog_create_schema_json_config.txt"')
-        config1(destination, config_file)
-    else:
+    print("OPERATIONS:-")
+    print(f"create_catalogJson: {create_catalogJson}")
+    print(f"config_1: {config_1}")
+    print(f"config_2: {config_2}")
+    print(f"config_3: {config_3}")
+    print(f"config_4: {config_4}\n-----")
+    if create_catalogJson:
+        destination = r"./CatalogJson/" + feedname
+        print(f'INFO  :  Catalog_Json_Path: "{destination}"')
+        check_path(destination, "")
+    elif config_1:
+        destination = yaml_data.get("atlasJson_path")
+        print(f'INFO  :  Atlas_Json_Path: "{destination}"')
+        check_path(destination, "config1")
+    if config_2 or config_3 or config_4:
+        check_path(config_file, "")
+    if create_catalogJson:
         checkHQL = True
         for dirpath, dirnames, filenames in os.walk(source):
             for file in filenames:
@@ -370,6 +438,37 @@ if __name__ == "__main__":
             exit()
         for file in os.listdir(destination):
             remove_trailing_comma_from_json(destination + "/" + file)
+    elif config_1:
+        print("-----\nCONFIG 1 Execution")
+        if len(os.listdir(destination)) == 0:
+            print(f"ERROR :  The directory is empty, {destination}")
+            print("*******\nEXECUTION FAILED")
+            restore_stdout(stdout_original)
+            exit()
+        print(
+            f'INFO  :  Config files path: "{config_file}/data_catalog_create_schema_json_config.txt"'
+        )
+        config1(destination, config_file)
+    if config_3 or config_4:
+        source = r"./classification"
+        checkSheet = True
+        for dirpath, dirnames, filenames in os.walk(source):
+            for file in filenames:
+                if file == classification_sheet:
+                    checkSheet = False
+                    print(f'INFO  :  "{file}" found at "{dirpath}"')
+                    if config_3:
+                        config3(classification_sheet, dirpath)
+                    if config_4:
+                        config4(classification_sheet, dirpath)
+        if checkSheet:
+            print(f'ERROR :  "{classification_sheet}" dose not exist')
+            print("EXECUTION FAILED\n")
+            exit()
+    else:
+        print(
+            "INFO  :  No operation specified to perform (Please check parameter.yaml)"
+        )
     print("*******\nEXECUTION COMPLETED")
 
     restore_stdout(stdout_original)

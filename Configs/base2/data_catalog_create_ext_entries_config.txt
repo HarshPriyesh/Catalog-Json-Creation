@@ -1,4 +1,0 @@
-entry_group,entry,schema_path,linked_resources
-staging,schema_base2_al00242.visa_hbos,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json,gs://ap-edhsta-bld-01-stb-euwe2-base2staging-01/base2_AL00242/base2/visa_hbos/
-staging,schema_base2_al00242.visa_lbc,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json,gs://ap-edhsta-bld-01-stb-euwe2-base2staging-01/base2_AL00242/base2/visa_lbc/
-staging,schema_base2_al00242.visa_loy,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json,gs://ap-edhsta-bld-01-stb-euwe2-base2staging-01/base2_AL00242/base2/visa_loy/

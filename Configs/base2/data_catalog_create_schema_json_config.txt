@@ -1,4 +1,0 @@
-atlas_ectract,dest_storage_path
-gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json/schema_base2_al00242.visa_hbos.json,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json/schema_base2_al00242.visa_hbos.json
-gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json/schema_base2_al00242.visa_lbc.json,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json/schema_base2_al00242.visa_lbc.json
-gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json/schema_base2_al00242.visa_loy.json,gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json/schema_base2_al00242.visa_loy.json
