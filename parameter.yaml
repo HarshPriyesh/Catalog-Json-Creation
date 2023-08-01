@@ -8,8 +8,8 @@ hql: "base2.hql"
 
 # config1 = data_catalog_create_schema_json_config.txt
 # config2 = data_catalog_create_ext_entries_config.txt
-# config3 =
-# config4 =
+# config3 = data_catalog_tag_external_entries_config.txt
+# config4 = data_catalog_tag_bigquery_col_config.txt
 create_catalogJson: "False"
 config1: "False" # If "create_catalogJson" is "True" then config1 will not be executed
 config2: "False" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
