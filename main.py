@@ -136,7 +136,7 @@ def convert_schema_to_json(dirpath, file):
             )
             tableName = temp1[-1].split(".")[-1].lower()
             DBtableName = database.lower() + "." + tableName
-            print(f"-----\nConversion {jsonCount+1}")
+            print(f"-----\nCatalog Creation {jsonCount+1}")
             print(f"INFO  :  Table Name - {tableName}")
             DBtableName = shorten_name(DBtableName)
             entryNames.append(DBtableName)
@@ -163,7 +163,7 @@ def convert_schema_to_json(dirpath, file):
                 if ")" in line:
                     continue
                 skip_mode = True
-            elif "location " in line.lower():
+            elif "location " in line.lower().rstrip()+" ":
                 if "'gs://" in line.lower():
                     locations.append(
                         line.replace("LOCATION", "")
@@ -206,7 +206,7 @@ def convert_schema_to_json(dirpath, file):
                         catalogJson.writelines(l2)
                 except IndexError:
                     print(
-                        f"ERROR :  List index out of range in table {tableName}:{wordsInLine}\n"
+                        f"ERROR :  List index out of range in table {tableName}:{wordsInLine}"
                     )
     catalogJson.close()
     temp_hql.close()
@@ -324,7 +324,7 @@ def config4(classification_sheet, dirpath):
     print(f'INFO  :  BQ Dataset ID: "{bq_datasetId}"')
     print(f'INFO  :  Reading..."{classification_sheet}"')
     all_sheets = pd.read_excel(
-        dirpath + "/" + classification_sheet, header=0, sheet_name=None
+        dirpath + "/" + classification_sheet, sheet_name=None
     )
     sheet1 = all_sheets["classification"]
     sheet2 = all_sheets["BQ"]
@@ -334,23 +334,28 @@ def config4(classification_sheet, dirpath):
     )
     print("INFO  :  Creating/Updating...data_catalog_tag_bigquery_col_config.txt")
     count = 0
+    bq_skip = False
     bq.write("table_id,taxonomy:policy_tag:field:operation;taxonomy:policy_tag:field:operation\n")
     for indexbq, rowbq in sheet2.iterrows():
         name = rowbq["Table Name"]
         run = 0
+        bq_skip = False
         for index, row in sheet1.iterrows():
             if name == row["Table Name"]:
                 if run == 0:
                     b = f"{bq_projectId}.{bq_datasetId}.{name},bld_{row['Taxonomy'].lower()}:{row['Policy Tag'].lower()}:{row['Column Name']}:add"
-                    run += 1
+                    run = 1
+                    bq_skip = True
                     continue
                 b = (
                     b
                     + f";bld_{row['Taxonomy'].lower()}:{row['Policy Tag'].lower()}:{row['Column Name']}:add"
                 )
-        count += 1
-        b = b + "\n"
-        bq.write(b)
+                bq_skip = True
+        if bq_skip:
+            count += 1
+            b = b + "\n"
+            bq.write(b)
     bq.close()
     print(f"INFO  :  Total lines updated in config4 file: {count}")
 
@@ -471,7 +476,7 @@ if __name__ == "__main__":
             for file in filenames:
                 if file == classification_sheet:
                     checkSheet = False
-                    print(f'INFO  :  "{file}" found at "{dirpath}"')
+                    print(f'-----\nINFO  :  "{file}" found at "{dirpath}"')
                     if config_3:
                         config3(classification_sheet, dirpath)
                     if config_4:
@@ -481,14 +486,14 @@ if __name__ == "__main__":
             print("EXECUTION FAILED\n")
             restore_stdout(stdout_original)
             exit()
-    elif not create_catalogJson or not config_1 or not config_2:
+    elif not create_catalogJson and not config_1:
         if config_2:
             print(
                 'ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"\n-----'
             )
-        elif not create_catalogJson:
+        else:
             print(
-                "ERROR :  No operation specified to perform (Please check parameter.yaml)\n-----"
+                "ERROR :  No operation specified to execute (Please check parameter.yaml)\n-----"
             )
         print("EXECUTION FAILED\n")
         restore_stdout(stdout_original)

@@ -1,6 +1,0 @@
-1. catalog json creation in hql " (" issue
-2. config4 file issue - only (bq + classification) tables needs to be mentioned
-3. config2 file issue while running catalog json, with atlas json working fine
-4. table names contain "raw_" then script fails
-5. if datatype are in capital in hql then conversion is not happening
-6. if after "partition by", ")" is appearing in datatype then catalog json is getting created wrongly
