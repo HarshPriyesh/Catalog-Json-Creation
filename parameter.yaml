@@ -1,20 +1,20 @@
-feedname: "base2"
+feedname: "verona"
 trouxid: "AL00242"
 
-schema_database: "SCHEMA_BASE2_AL00242"
-raw_database: "RAW_BASE2_AL00242"
+schema_database: "consumption_rf_3_insfin_verona_mpf"
+raw_database: ""
 
-hql: "base2.hql"
+hql: "test.hql"
 
 # config1 = data_catalog_create_schema_json_config.txt
 # config2 = data_catalog_create_ext_entries_config.txt
 # config3 = data_catalog_tag_external_entries_config.txt
 # config4 = data_catalog_tag_bigquery_col_config.txt
-create_catalogJson: "False"
+create_catalogJson: "True"
 config1: "False" # If "create_catalogJson" is "True" then config1 will not be executed
 config2: "False" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
-config3: "True"
-config4: "True"
+config3: "False"
+config4: "False"
 
 atlasJson_path: "./AtlasJson/" # config1
 entry_group: "staging" # config2, config3

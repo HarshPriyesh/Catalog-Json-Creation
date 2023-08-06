@@ -174,6 +174,8 @@ def convert_schema_to_json(dirpath, file):
                 if ";" in line:
                     continue
                 skip_mode = True
+            elif ")," in line and skip_mode:
+                skip_mode = True
             elif ")" in line and skip_mode:
                 skip_mode = False
             elif ";" in line and skip_mode:
@@ -191,6 +193,7 @@ def convert_schema_to_json(dirpath, file):
                                 .split("(", 1)[0]
                                 .replace(",", "")
                                 .replace(")", "")
+                                .lower()
                             ),
                             '"},\n',
                         )
@@ -469,7 +472,7 @@ if __name__ == "__main__":
             print(f'ERROR :  "{classification_sheet}" dose not exist')
             print("EXECUTION FAILED\n")
             exit()
-    else:
+    elif not (create_catalogJson or config_1 or config_2):
         print(
             "INFO  :  No operation specified to perform (Please check parameter.yaml)"
         )
