@@ -309,7 +309,7 @@ def config3(classification_sheet, dirpath):
         count = 0
         for index, row in classification.iterrows():
             ext_name = row["Database Name"] + "_" + row["Table Name"]
-            sentence = f"{entry_group},{ext_name},{row['Column Name']},{row['Taxonomy'].lower()},{row['Policy Tag'].lower()}\n"
+            sentence = f"{entry_group},{ext_name.lower()},{row['Column Name']},{row['Taxonomy'].lower()},{row['Policy Tag'].lower()}\n"
             config3.write(sentence)
             count += 1
     print(f"INFO  :  Total lines updated in config3 file: {count}")
