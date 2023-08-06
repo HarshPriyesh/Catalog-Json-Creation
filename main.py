@@ -65,10 +65,8 @@ def check_datatype(line, datatypes):
     return False
 
 
-global trim_name
-
-
 def shorten_name(DBtableName, max_length=63):
+    global trim_name
     length = len(DBtableName)
     print(f'INFO  :  Number of characters in "{DBtableName}" - {length}')
     if length > max_length:
@@ -119,15 +117,23 @@ def convert_schema_to_json(dirpath, file):
     print(f'INFO  :  "temp.hql" created')
     temp_hql = open("temp.hql", "r")
     skip_mode = False
-    jsonCount = 0
+    global trim_name
     trim_name = 0
+    jsonCount = 0
     entryNames = []
     locations = []
     for line in temp_hql:
         wordsInLine = line.lstrip().rstrip().replace("`", "").split(" ")
         if "create " in line.lower():
-            temp1 = line.lstrip().rstrip().replace("`", "").split(" ")
-            tableName = temp1[-1].split(".")[-1].replace("(", "").lower()
+            temp1 = (
+                line.lstrip()
+                .rstrip()
+                .replace("`", "")
+                .replace(" (", "")
+                .replace("(", "")
+                .split(" ")
+            )
+            tableName = temp1[-1].split(".")[-1].lower()
             DBtableName = database.lower() + "." + tableName
             print(f"-----\nConversion {jsonCount+1}")
             print(f"INFO  :  Table Name - {tableName}")
@@ -212,7 +218,7 @@ def convert_schema_to_json(dirpath, file):
     print(f"INFO  :  Total Catalog Json created: {jsonCount}")
     if trim_name > 0:
         print(f"INFO  :  Number of table names trimmed: {trim_name}")
-    trim_name = 0
+        trim_name = 0
     if config_2:
         config2(entryNames, locations)
 
