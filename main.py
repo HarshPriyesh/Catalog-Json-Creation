@@ -307,6 +307,7 @@ def config3(classification_sheet, dirpath):
             "INFO  :  Creating/Updating...data_catalog_tag_external_entries_config.txt"
         )
         count = 0
+        config3.write("entry_group_id,entry_id,column_id,tag_template,tag_template_field\n")
         for index, row in classification.iterrows():
             ext_name = row["Database Name"] + "_" + row["Table Name"]
             sentence = f"{entry_group},{ext_name.lower()},{row['Column Name']},{row['Taxonomy'].lower()},{row['Policy Tag'].lower()}\n"
@@ -333,6 +334,7 @@ def config4(classification_sheet, dirpath):
     )
     print("INFO  :  Creating/Updating...data_catalog_tag_bigquery_col_config.txt")
     count = 0
+    bq.write("table_id,taxonomy:policy_tag:field:operation;taxonomy:policy_tag:field:operation\n")
     for indexbq, rowbq in sheet2.iterrows():
         name = rowbq["Table Name"]
         run = 0
