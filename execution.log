@@ -1,0 +1,19 @@
+
+EXECUTION STARTED
+*******
+Feed Name: AMCMAS
+TrouxID: AL04147
+Schema Database: SCHEMA_AMC_MAS_AL04147
+Raw Database: RAW_AMC_MAS_AL04147
+HQL: amcmas.hql
+*******
+OPERATIONS:-
+create_catalogJson: False
+config_1: False
+config_2: True
+config_3: False
+config_4: False
+-----
+ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"
+EXECUTION FAILED
+

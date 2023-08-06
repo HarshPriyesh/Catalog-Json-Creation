@@ -155,20 +155,6 @@ def convert_schema_to_json(dirpath, file):
                 '  "schema": {"columns": [\n',
             ]
             catalogJson.writelines(l)
-        elif "location " in line.lower():
-            if "'gs://" in line.lower():
-                locations.append(
-                    line.replace("LOCATION", "")
-                    .replace(r"${hivevar:stagingBucket}", f"{bucket_name}")
-                    .replace("'", "")
-                    .replace(";", "")
-                    .replace("\n", "")
-                    .lstrip()
-                )
-            else:
-                locations.append(
-                    f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{tableName}/"
-                )
         else:
             if "partitioned by" in line.lower():
                 l1 = ["  ]}\n", "}"]
@@ -176,7 +162,20 @@ def convert_schema_to_json(dirpath, file):
                 if ")" in line:
                     continue
                 skip_mode = True
-            elif "location" in line.lower():
+            elif "location " in line.lower():
+                if "'gs://" in line.lower():
+                    locations.append(
+                        line.replace("LOCATION", "")
+                        .replace(r"${hivevar:stagingBucket}", f"{bucket_name}")
+                        .replace("'", "")
+                        .replace(";", "")
+                        .replace("\n", "")
+                        .lstrip()
+                    )
+                else:
+                    locations.append(
+                        f"gs://{bucket_name}/{feedname}_{trouxid}/{trouxid}/{tableName}/"
+                    )
                 if ";" in line:
                     continue
                 skip_mode = True
@@ -478,10 +477,17 @@ if __name__ == "__main__":
             print(f'ERROR :  "{classification_sheet}" dose not exist')
             print("EXECUTION FAILED\n")
             exit()
-    elif not (create_catalogJson or config_1 or config_2):
-        print(
-            "INFO  :  No operation specified to perform (Please check parameter.yaml)"
-        )
+    elif not create_catalogJson or not config_1 or not config_2:
+        if config_2:
+            print(
+                'ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"'
+            )
+        else:
+            print(
+                "ERROR :  No operation specified to perform (Please check parameter.yaml)"
+            )
+        print("EXECUTION FAILED\n")
+        exit()
     print("*******\nEXECUTION COMPLETED")
 
     restore_stdout(stdout_original)

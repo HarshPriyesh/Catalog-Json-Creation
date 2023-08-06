@@ -1,18 +1,18 @@
-feedname: "verona"
-trouxid: "AL00242"
+feedname: "AMCMAS"
+trouxid: "AL04147"
 
-schema_database: "consumption_rf_3_insfin_verona_mpf"
-raw_database: ""
+schema_database: "SCHEMA_AMC_MAS_AL04147"
+raw_database: "RAW_AMC_MAS_AL04147"
 
-hql: "test.hql"
+hql: "amcmas.hql"
 
 # config1 = data_catalog_create_schema_json_config.txt
 # config2 = data_catalog_create_ext_entries_config.txt
 # config3 = data_catalog_tag_external_entries_config.txt
 # config4 = data_catalog_tag_bigquery_col_config.txt
-create_catalogJson: "True"
+create_catalogJson: "False"
 config1: "False" # If "create_catalogJson" is "True" then config1 will not be executed
-config2: "False" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
+config2: "True" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
 config3: "False"
 config4: "False"
 
