@@ -12,14 +12,17 @@ hql: "amcmas.hql"
 # config4 = data_catalog_tag_bigquery_col_config.txt
 create_catalogJson: "False"
 config1: "False" # If "create_catalogJson" is "True" then config1 will not be executed
-config2: "True" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
-config3: "False"
+config2: "False" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
+config3: "True"
 config4: "False"
 
 atlasJson_path: "./AtlasJson/" # config1
+
 entry_group: "staging" # config2, config3
 bucket_name: "ap-edhsta-bld-01-stb-euwe2-base2staging-01" # config2
-classification_sheet: "base2.xlsx" # config2, config3
+
+classification_sheet: "AMC-MAS.xlsx" # config2, config3
+
 BQ_datasetID: "ap_edhcon_bld_01_bqd_euwe2_base2stg_01" # config3
 
 # Atlas and catalog json GCP path

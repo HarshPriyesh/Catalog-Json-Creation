@@ -1,19 +1,51 @@
 
 EXECUTION STARTED
 *******
-Feed Name: AMCMAS
-TrouxID: AL04147
-Schema Database: SCHEMA_AMC_MAS_AL04147
-Raw Database: RAW_AMC_MAS_AL04147
-HQL: amcmas.hql
+Feed Name: VISA
+TrouxID: AL00242
+Schema Database: SCHEMA_BASE2_AL00242
+Raw Database: 
+HQL: visa.hql
 *******
 OPERATIONS:-
-create_catalogJson: False
+create_catalogJson: True
 config_1: False
 config_2: True
 config_3: False
 config_4: False
 -----
+INFO  :  Catalog_Json_Path: "./CatalogJson/VISA"
+INFO  :  "visa.hql" found at "./hql"
+INFO  :  Reading..."visa.hql"
+INFO  :  Filtering HQL by keeping only schema table structure(s)"
+INFO  :  Creating temporary HQL, "temp.hql", with filtered HQL details
+INFO  :  "temp.hql" created
+-----
+Conversion 1
+INFO  :  Table Name - visa_lbc
+INFO  :  Number of characters in "schema_base2_al00242.visa_lbc" - 29
+INFO  :  Creating Catalog Json, schema_base2_al00242.visa_lbc.json
+-----
+Conversion 2
+INFO  :  Table Name - visa_loy
+INFO  :  Number of characters in "schema_base2_al00242.visa_loy" - 29
+INFO  :  Creating Catalog Json, schema_base2_al00242.visa_loy.json
+-----
+Conversion 3
+INFO  :  Table Name - visa_hbos
+INFO  :  Number of characters in "schema_base2_al00242.visa_hbos" - 30
+INFO  :  Creating Catalog Json, schema_base2_al00242.visa_hbos.json
+-----
+INFO  :  "temp.hql" has been deleted successfully.
+INFO  :  Total Catalog Json created: 3
+-----
+CONFIG 2 Execution
+INFO  :  entry_group - "staging"
+INFO  :  bucket_name - "ap-edhsta-bld-01-stb-euwe2-base2staging-01"
+INFO  :  Config 2 files path: "./Configs/VISA/data_catalog_create_ext_entries_config.txt"
+INFO  :  Creating/Updating...data_catalog_create_ext_entries_config.txt
+INFO  :  Total lines updated in config2 file: 3
 ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"
+-----
 EXECUTION FAILED
 

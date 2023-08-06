@@ -86,20 +86,21 @@ def skip_lines_until_create(lines):
     if rawDB == "":
         rawDB = "raw_"
     for line in lines:
-        if "create " in line.lower() and "database" in line.lower():
-            hql_skip_mode = True
-            continue
-        if "create " in line.lower() and rawDB.lower() in line.lower():
-            hql_skip_mode = True
-            continue
-        if "drop table " in line.lower():
-            hql_skip_mode = True
-            continue
-        if "recon_table" in line.lower():
-            hql_skip_mode = True
-            continue
         if "create " in line.lower():
-            hql_skip_mode = False
+            if "database" in line.lower():
+                hql_skip_mode = True
+                continue
+            elif rawDB.lower() in line.lower() and ".raw_" not in line.lower():
+                hql_skip_mode = True
+                continue
+            elif "recon_table" in line.lower():
+                hql_skip_mode = True
+                continue
+            else:
+                hql_skip_mode = False
+        elif "drop table " in line.lower():
+            hql_skip_mode = True
+            continue
         if not hql_skip_mode:
             yield line
 
@@ -476,17 +477,19 @@ if __name__ == "__main__":
         if checkSheet:
             print(f'ERROR :  "{classification_sheet}" dose not exist')
             print("EXECUTION FAILED\n")
+            restore_stdout(stdout_original)
             exit()
     elif not create_catalogJson or not config_1 or not config_2:
         if config_2:
             print(
-                'ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"'
+                'ERROR :  To execute the "config2", either "create_catalogjson" or "config_1" should be "True"\n-----'
             )
-        else:
+        elif not create_catalogJson:
             print(
-                "ERROR :  No operation specified to perform (Please check parameter.yaml)"
+                "ERROR :  No operation specified to perform (Please check parameter.yaml)\n-----"
             )
         print("EXECUTION FAILED\n")
+        restore_stdout(stdout_original)
         exit()
     print("*******\nEXECUTION COMPLETED")
 
