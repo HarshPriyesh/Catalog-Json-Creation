@@ -341,7 +341,7 @@ def config4(classification_sheet, dirpath):
         run = 0
         bq_skip = False
         for index, row in sheet1.iterrows():
-            if name == row["Table Name"]:
+            if name.lower() == row["Table Name"].lower():
                 if run == 0:
                     b = f"{bq_projectId}.{bq_datasetId}.{name},bld_{row['Taxonomy'].lower()}:{row['Policy Tag'].lower()}:{row['Column Name']}:add"
                     run = 1
