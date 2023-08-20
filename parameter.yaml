@@ -1,0 +1,31 @@
+feedname: "AMCMAS"
+trouxid: "AL04147"
+
+schema_database: "SCHEMA_AMC_MAS_AL04147"
+raw_database: "RAW_AMC_MAS_AL04147"
+
+hql: "amcmas.hql"
+
+atlasJson_path: "./AtlasJson/AMCMAS/" # to create config1
+
+# config1 = data_catalog_create_schema_json_config.txt
+# config2 = data_catalog_create_ext_entries_config.txt
+# config3 = data_catalog_tag_external_entries_config.txt
+# config4 = data_catalog_tag_bigquery_col_config.txt
+create_catalogJson: "False"
+config1: "True" # If "create_catalogJson" is "True" then config1 will not be executed
+config2: "True" # To execute "config2", either "create_catalogJson" or "config1" should be "True"
+config3: "True"
+config4: "True"
+
+entry_group: "staging" # to create config2, config3
+bucket_name: "ap-edhsta-bld-01-stb-euwe2-base2staging-01" # to create config2
+
+classification_sheet: "AMC-MAS.xlsx" # to create config2, config3
+
+BQ_datasetID: "ap_edhcon_bld_01_bqd_euwe2_base2stg_01" # to create config3
+
+# Atlas and catalog json GCP path
+BQ_projectID: "ap-edhcon-bld-01-a155"
+GCP_AtlasJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/atlas_json"
+GCP_CatalogJson_path: "gs://ap-edhsta-bld-01-stb-euwe2-config-01/engine/data_catalog_module/catalog_json"

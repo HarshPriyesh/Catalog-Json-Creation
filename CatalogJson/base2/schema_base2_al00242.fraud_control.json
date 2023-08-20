@@ -1,0 +1,28 @@
+{
+  "name": "schema_base2_al00242.fraud_control",
+  "description": "",
+  "displayName": "schema_base2_al00242.fraud_control",
+  "linked_resource": "",
+  "schema": {"columns": [
+    {"column": "record_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "pan", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "amount", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "trantype", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "arn", "description": "null", "mode": "NULLABLE", "type": "FLOAT"},
+    {"column": "reasoncode", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "authcode", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "merchant", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "city", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "termtrandate", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "postingdate", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "heritagecode", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "debit_credit_indicator", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "heritage", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "gti", "description": "null", "mode": "NULLABLE", "type": "INTEGER"},
+    {"column": "edh_ingest_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_ingest_delete_flag", "description": "null", "mode": "NULLABLE", "type": "BOOLEAN"},
+    {"column": "edh_source_extract_ts", "description": "null", "mode": "NULLABLE", "type": "TIMESTAMP"},
+    {"column": "edh_brand_id", "description": "null", "mode": "NULLABLE", "type": "STRING"},
+    {"column": "edh_ingest_map", "description": "null", "mode": "NULLABLE", "type": "STRING"}
+  ]}
+}

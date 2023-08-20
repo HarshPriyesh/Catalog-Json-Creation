@@ -1,4 +1,0 @@
-feedname: 'base2'
-schema_database: 'SCHEMA_BASE2_AL00242'
-raw_database: 'RAW_BASE2_AL00242'
-hql: 'base2.hql'
